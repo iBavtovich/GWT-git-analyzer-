@@ -1,4 +1,4 @@
-package com.epam.gwt.client;
+package com.epam.gwt.client.services;
 
 import java.util.HashMap;
 import java.util.Map;

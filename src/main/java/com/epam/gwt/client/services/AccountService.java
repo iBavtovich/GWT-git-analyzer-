@@ -1,4 +1,4 @@
-package com.epam.gwt.client;
+package com.epam.gwt.client.services;
 
 public interface AccountService {
 
