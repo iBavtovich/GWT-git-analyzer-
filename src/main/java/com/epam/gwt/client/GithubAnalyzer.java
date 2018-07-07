@@ -1,6 +1,7 @@
 package com.epam.gwt.client;
 
 import com.epam.gwt.client.i18n.GitHubAnalyzerConstants;
+import com.epam.gwt.client.i18n.GithubAnalyzerMessages;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -11,9 +12,14 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import java.util.logging.Logger;
+
 public class GithubAnalyzer implements EntryPoint {
 
+    private static final Logger LOG = Logger.getLogger("com.epam.gwt.client.GithubAnalyzer");
+
     private final GitHubAnalyzerConstants constants = GWT.create(GitHubAnalyzerConstants.class);
+    private final GithubAnalyzerMessages messages = GWT.create(GithubAnalyzerMessages.class);
 
     @Override
     public void onModuleLoad() {
@@ -33,7 +39,7 @@ public class GithubAnalyzer implements EntryPoint {
         dialogBox.setAnimationEnabled(true);
         dialogBox.add(loginPanel);
 
-        sendButton.addClickHandler(event -> Window.alert("Successfully logged in: " + nameField.getText()));
+        sendButton.addClickHandler(event -> LOG.info(messages.successfulLogin(nameField.getText())));
 
         RootPanel.get().add(dialogBox);
 

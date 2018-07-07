@@ -10,8 +10,8 @@
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
-  <extend-property name="locale" values="ru, bel"/>
-  <!--<set-property name="locale" value="ru" />-->
+  <extend-property name="locale" values="ru"/>
+  <extend-property name="locale" values="bel"/>
 
   <entry-point class='com.epam.gwt.client.GithubAnalyzer'/>
 
