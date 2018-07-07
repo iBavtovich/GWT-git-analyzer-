@@ -76,11 +76,10 @@ public class GithubAnalyzer implements EntryPoint {
 
         tabPanel = new TabPanel();
         tabPanel.add(userTable, "Users");
-        tabPanel.add(new Label("Repositories shoul be here"), "Repositories");
+        tabPanel.add(new Label("Repositories should be here"), "Repositories");
         tabPanel.add(new Label("Other"), "Other");
         tabPanel.selectTab(0);
         tabPanel.addSelectionHandler(selectedEvent -> History.newItem("page" + selectedEvent.getSelectedItem()));
-
 
         History.addValueChangeHandler(changeEvent -> {
             String historyToken = changeEvent.getValue();
@@ -88,22 +87,25 @@ public class GithubAnalyzer implements EntryPoint {
             tabPanel.selectTab(tabIndex);
         });
 
-        loginDialogBox = new LoginDialogBox((userName, password) -> {
-            accountService.login(userName, password, new AsyncCallback<Boolean>() {
-                @Override
-                public void onFailure(Throwable caught) {
+        loginDialogBox = new LoginDialogBox((userName, password) -> accountService.login(userName, password, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                LOG.severe(messages.invalidLogin(userName));
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                if (result) {
                     loginDialogBox.hide();
                     RootPanel.get().remove(loginDialogBox);
                     RootPanel.get().add(tabPanel);
                     LOG.info(messages.successfulLogin(userName));
-                }
-
-                @Override
-                public void onSuccess(Boolean result) {
+                } else {
                     LOG.severe(messages.invalidLogin(userName));
                 }
-            });
-        });
+            }
+        }));
+
         RootPanel.get().add(loginDialogBox);
 
         loginDialogBox.show();

@@ -6,7 +6,7 @@
   <groupId>com.epam.gwt</groupId>
   <artifactId>GithubAnalyzer</artifactId>
   <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>com.epam.gwt.GithubAnalyzer</name>
 
   <properties>
