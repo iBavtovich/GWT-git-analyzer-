@@ -3,12 +3,15 @@
   "http://gwtproject.org/doctype/2.8.2/gwt-module.dtd">
 <module rename-to='githubanalyzer'>
   <inherits name='com.google.gwt.user.User'/>
+  <inherits name='com.google.gwt.logging.Logging'/>
 
   <inherits name='com.google.gwt.user.theme.clean.Clean'/>
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
+  <extend-property name="locale" values="ru, bel"/>
+  <!--<set-property name="locale" value="ru" />-->
 
   <entry-point class='com.epam.gwt.client.GithubAnalyzer'/>
 
