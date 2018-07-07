@@ -4,7 +4,6 @@ import com.epam.gwt.client.i18n.GitHubAnalyzerConstants;
 import com.epam.gwt.client.i18n.GithubAnalyzerMessages;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.Request;
@@ -12,10 +11,14 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -28,6 +31,9 @@ public class GithubAnalyzer implements EntryPoint {
     private final GitHubAnalyzerConstants constants = GWT.create(GitHubAnalyzerConstants.class);
     private final GithubAnalyzerMessages messages = GWT.create(GithubAnalyzerMessages.class);
     private final AccountService accountService = new InMemoryAccountService();
+
+    private final FlexTable userTable = new FlexTable();
+    private TabPanel tabPanel;
 
     @Override
     public void onModuleLoad() {
@@ -50,6 +56,10 @@ public class GithubAnalyzer implements EntryPoint {
         //REST
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, "https://api.github.com/users");
         requestBuilder.setHeader("Content-Type", "application/json; charset=utf-8");
+        userTable.setText(0, 0, "ID");
+        userTable.setText(0, 1, "Login");
+        userTable.setText(0, 2, "URL");
+        userTable.setText(0, 3, "Type");
 
         try {
             requestBuilder.sendRequest(null, new RequestCallback() {
@@ -61,6 +71,10 @@ public class GithubAnalyzer implements EntryPoint {
                         JsArray<User> users = JsonUtils.safeEval(jsonResponse);
                         for (int i = 0; i < users.length(); i++) {
                             User user = users.get(i);
+                            userTable.setText(i + 1, 0, String.valueOf(user.getId()));
+                            userTable.setText(i + 1, 1, user.getLogin());
+                            userTable.setText(i + 1, 2, user.getUrl());
+                            userTable.setText(i + 1, 3, user.getType());
                             LOG.info("User" + user.getLogin());
                         }
                     } else {
@@ -74,8 +88,9 @@ public class GithubAnalyzer implements EntryPoint {
                 }
             });
         } catch (RequestException e) {
-            e.printStackTrace();
+            LOG.severe(e.getMessage());
         }
+
 
         sendButton.addClickHandler(event -> {
             boolean isValid = accountService.login(nameField.getText(), passwordField.getText());
@@ -83,6 +98,21 @@ public class GithubAnalyzer implements EntryPoint {
                 dialogBox.hide();
                 LOG.info(messages.successfulLogin(nameField.getText()));
                 RootPanel.get().remove(dialogBox);
+
+                tabPanel = new TabPanel();
+                tabPanel.add(userTable, "Users");
+                tabPanel.add(new Label("Repositories shoul be here"), "Repositories");
+                tabPanel.add(new Label("Other"), "Other");
+                tabPanel.selectTab(0);
+                tabPanel.addSelectionHandler(selectedEvent -> History.newItem("page" + selectedEvent.getSelectedItem()));
+                RootPanel.get().add(tabPanel);
+
+                History.addValueChangeHandler(changeEvent -> {
+                    String historyToken = changeEvent.getValue();
+                    Integer tabIndex = Integer.valueOf(historyToken.substring(4));
+                    tabPanel.selectTab(tabIndex);
+                });
+
             } else {
                 LOG.severe(messages.invalidLogin(nameField.getText()));
             }
