@@ -21,7 +21,7 @@ public class LoginDialogBox extends DialogBox {
         final Button sendButton = new Button(constants.loginButtonText());
         sendButton.addStyleName("sendButton");
         sendButton.addClickHandler(event -> onLoginButtonClickAction.accept(nameField.getText(), passwordField.getText()));
-
+        passwordField.addKeyPressHandler(event -> onLoginButtonClickAction.accept(nameField.getText(), passwordField.getText()));
         loginPanel = new VerticalPanel();
         loginPanel.add(nameField);
         loginPanel.add(passwordField);
