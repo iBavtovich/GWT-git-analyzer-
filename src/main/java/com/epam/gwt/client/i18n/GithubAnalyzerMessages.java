@@ -6,4 +6,7 @@ public interface GithubAnalyzerMessages extends Messages {
 
     @DefaultMessage("Successfully logged in: {0}")
     String successfulLogin(String name);
+
+    @DefaultMessage("Invalid name or password: {0}")
+    String invalidLogin(String name);
 }
