@@ -4,6 +4,9 @@ import com.epam.gwt.client.i18n.GitHubAnalyzerConstants;
 import com.epam.gwt.client.i18n.GithubAnalyzerMessages;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -54,8 +57,12 @@ public class GithubAnalyzer implements EntryPoint {
                 public void onResponseReceived(Request request, Response response) {
                     int statusCode = response.getStatusCode();
                     if (statusCode == 200) {
-                        String text = response.getText();
-                        LOG.info(text);
+                        String jsonResponse = response.getText();
+                        JsArray<User> users = JsonUtils.safeEval(jsonResponse);
+                        for (int i = 0; i < users.length(); i++) {
+                            User user = users.get(i);
+                            LOG.info("User" + user.getLogin());
+                        }
                     } else {
                         LOG.severe("Response status code: " + statusCode);
                     }
