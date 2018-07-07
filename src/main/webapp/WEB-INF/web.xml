@@ -7,13 +7,13 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.epam.gwt.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>accountServlet</servlet-name>
+    <servlet-class>com.epam.gwt.server.AccountServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/githubanalyzer/greet</url-pattern>
+    <servlet-name>accountServlet</servlet-name>
+    <url-pattern>/githubanalyzer/accounts</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

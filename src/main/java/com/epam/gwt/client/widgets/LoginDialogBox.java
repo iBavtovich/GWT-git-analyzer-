@@ -13,6 +13,8 @@ import java.util.function.BiConsumer;
 public class LoginDialogBox extends DialogBox {
 
     private final GitHubAnalyzerConstants constants = GWT.create(GitHubAnalyzerConstants.class);
+    private final DialogBox dialogBox;
+    private final VerticalPanel loginPanel;
 
     public LoginDialogBox(BiConsumer<String, String> onLoginButtonClickAction) {
         final TextBox nameField = new TextBox();
@@ -21,12 +23,12 @@ public class LoginDialogBox extends DialogBox {
         sendButton.addStyleName("sendButton");
         sendButton.addClickHandler(event -> onLoginButtonClickAction.accept(nameField.getText(), passwordField.getText()));
 
-        VerticalPanel loginPanel = new VerticalPanel();
+        loginPanel = new VerticalPanel();
         loginPanel.add(nameField);
         loginPanel.add(passwordField);
         loginPanel.add(sendButton);
 
-        DialogBox dialogBox = new DialogBox();
+        dialogBox = new DialogBox();
         dialogBox.setText(constants.dialogBoxTitle());
         dialogBox.setAnimationEnabled(true);
         dialogBox.add(loginPanel);

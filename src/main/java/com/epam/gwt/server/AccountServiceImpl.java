@@ -1,14 +1,16 @@
-package com.epam.gwt.client.services;
+package com.epam.gwt.server;
+
+import com.epam.gwt.client.services.AccountService;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class InMemoryAccountService implements AccountService {
-
+public class AccountServiceImpl extends RemoteServiceServlet implements AccountService {
     private final Map<String, String> users;
 
-    public InMemoryAccountService() {
+    public AccountServiceImpl() {
         users = new HashMap<>();
         users.put("vasya", "123");
         users.put("admin", "admin");
